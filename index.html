@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web-calculator</title>
+    <style>
+        * {
+            padding: 0 0 0 0;
+            margin: 0 0 0 0;
+            font-family: Oswald, "Times New Roman", serif;
+        }
+
+
+        header div {
+            text-align: center;
+            height: 5vh;
+            background: black;
+            color: white;
+            justify-content: center;
+            box-shadow: grey 0 1px 5px;
+            margin: 0 0 0 0;
+            padding: 0 0 0 0;
+        }
+
+        form {
+            justify-content: center;
+
+        }
+
+        form input, label {
+            display: block;
+            margin: 0 auto;
+            border-radius: 5px;
+            width: 30vw;
+            text-align: center;
+
+        }
+
+        .submit {
+            width: 10vw;
+            background: black;
+            color: white;
+            border-width: 0;
+            box-shadow: grey 0 2px 2px;
+        }
+
+        .entry {
+            box-shadow: grey inset 0 0 3px;
+            border: 2px;
+            border-radius: 15px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div><span>Web-calculator</span></div>
+</header>
+<main>
+    <br>
+    <hr style="width:50vw; border-radius: 15px; background: black; height: 3px; justify-self: center; margin: auto">
+    <br>
+    <form>
+        <label for="u">U кВ: </label><input id="u" class="entry" type="number"/>
+        <label for="ik">Ik кА: </label><input id="ik" class="entry" type="number"/>
+        <label for="tf">tf: </label><input id="tf" class="entry" type="number"/>
+        <label for="sm">Sm кВ*А: </label><input id="sm" class="entry" type="number"/>
+        <label for="p">P кВ*А: </label><input id="p" class="entry" type="number"/>
+        <label for="tm">Tm: </label><input id="tm" class="entry" type="number"/>
+        <input class="submit" type="button" value="Вирахувати" onclick="task()"/>
+    </form>
+    <p id="result"></p>
+    <script>
+        function task() {
+
+            const u = document.getElementById("u").value * 1000;
+            const ik = document.getElementById("ik").value * 1000;
+            const tf = document.getElementById("tf").value;
+            const p = document.getElementById("p").value * 1000;
+            const sm = document.getElementById("sm").value * 1000;
+            const tm = document.getElementById("tm").value;
+
+            const ct = 92;
+            let jek;
+
+            if (tm > 1000 && tm <= 3000) {
+                jek = 1.6;
+            } else if (tm > 3000 && tm <= 5000) {
+                jek = 1.4;
+            } else if (tm > 5000) {
+                jek = 1.2;
+            }
+
+            let im = (sm / 2) / ((3 ** 0.5) * u);
+            let impa = 2 * im;
+            let sek = im / jek;
+            let smin = (ik * (tf ** 0.5)) / (ct);
+
+
+            document.getElementById("result").innerHTML =
+                "<br>I<sub>m</sub> = " + im.toFixed(2) + " A" +
+                "<br>I<sub>m.pa</sub> = " + impa.toFixed(2) + " A" +
+                "<br>j<sub>ek</sub> = " + jek.toFixed(2) + " A/mm<sup>2</sup>" +
+                "<br>s<sub>ek</sub> = " + sek.toFixed(2) + " mm<sup>2</sup>" +
+                "<br>s<sub>min</sub> = " + smin.toFixed(2) + " mm<sup>2</sup>";
+        }
+    </script>
+
+
+    <form>
+        <label for="sk">Sk: </label><input id="sk" class="entry" type="number"/>
+        <input class="submit" type="button" value="Вирахувати" onclick="task2()"/>
+    </form>
+    <p id="result2"></p>
+    <script>
+        function task2() {
+
+            const sk = document.getElementById("sk").value;
+
+            const u = 10.5;
+            const uk = 10.5;
+            const sn = 6.3;
+
+            let xs = (u ** 2) / (sk);
+            let xt = (uk / 100) * ((u ** 2) / sn);
+            let xe = xs + xt;
+            let ip0 = u / ((3 ** 0.5) * xe);
+
+
+            document.getElementById("result2").innerHTML =
+                "<br>X<sub>s</sub> = " + xs.toFixed(2) + " Ом" +
+                "<br>X<sub>t</sub> = " + xt.toFixed(2) + " Ом" +
+                "<br>X<sub>sum</sub> = " + xe.toFixed(2) + " Ом" +
+                "<br>I<sub>p0</sub> = " + ip0.toFixed(2) + " кА";
+        }
+    </script>
+
+
+    <form>
+        <label for="rsn">R: </label><input id="rsn" class="entry" type="number"/>
+        <label for="xsn">X: </label><input id="xsn" class="entry" type="number"/>
+        <label for="rsnmin">Rmin: </label><input id="rsnmin" class="entry" type="number"/>
+        <label for="xsnmin">Xmin: </label><input id="xsnmin" class="entry" type="number"/>
+        <input class="submit" type="button" value="Вирахувати" onclick="task3()"/>
+    </form>
+    <p id="result3"></p>
+    <script>
+        function task3() {
+
+            const rsn = document.getElementById("rsn").value;
+            const xsn = document.getElementById("xsn").value;
+            const rsnmin = document.getElementById("rsnmin").value;
+            const xsnmin = document.getElementById("xsnmin").value;
+
+            const ukmax = 11.1;
+            const st = 6.3;
+            const uvn = 115;
+            const rsh = parseFloat(rsn);
+
+            let xt = (ukmax * (uvn ** 2)) / (100 * st);
+            let xsh = parseFloat(xsn) + xt;
+            let zsh = ((rsh ** 2) + (xsh ** 2)) ** 0.5;
+
+            let rshmin = parseFloat(rsnmin);
+            let xshmin = parseFloat(xsnmin) + xt;
+            let zshmin = ((rshmin ** 2) + (xshmin ** 2)) ** 0.5;
+
+
+            document.getElementById("result3").innerHTML =
+                "<br>X<sub>t</sub> = " + xt.toFixed(2) + " Ом" +
+                "<br>R<sub>ш</sub> = " + rsh.toFixed(2) + " Ом" +
+                "<br>X<sub>ш</sub> = " + xsh.toFixed(2) + " Ом" +
+                "<br>Z<sub>ш</sub> = " + zsh.toFixed(2) + " Ом" +
+                "<br>R<sub>шмін</sub> = " + rshmin.toFixed(2) + " Ом" +
+                "<br>X<sub>шмін</sub> = " + xshmin.toFixed(2) + " Ом" +
+                "<br>Z<sub>шмін</sub> = " + zshmin.toFixed(2) + " Ом";
+        }
+    </script>
+</main>
+</body>
+</html>
